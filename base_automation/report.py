@@ -1,5 +1,5 @@
-import allure as report
+import allure as utils
 
 __all__ = [
-    'report'
+    'utils'
 ]

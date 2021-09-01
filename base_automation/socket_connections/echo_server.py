@@ -11,7 +11,7 @@ class ServerSocket:
         self._data = None
         self._server_socket = self.__create_server()
 
-    @report.step('create server socket_connections')
+    @report.utils.step('create server socket_connections')
     def __create_server(self):
         try:
             return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -19,7 +19,7 @@ class ServerSocket:
             print(e)
             assert False
 
-    @report.step('listen to client')
+    @report.utils.step('listen to client')
     def listen_to_client(self):
         print("Socket Started")
         self._server_socket.bind((self._host, self._port))
@@ -36,12 +36,12 @@ class ServerSocket:
                 conn.sendall(self._data)
                 print(self._data)
 
-    @report.step('close server socket_connections')
+    @report.utils.step('close server socket_connections')
     def close_socket(self):
         self._server_socket.close()
         print("server socket_connections closed")
 
-    @report.step('str to bytes')
+    @report.utils.step('str to bytes')
     def __str_to_bytes(self):
         self._data = str.encode(self._data)
         print(type(self._data))  # ensure it is byte representation

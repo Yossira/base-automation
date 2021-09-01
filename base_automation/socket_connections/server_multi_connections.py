@@ -13,7 +13,7 @@ class MultiServer:
         self._server_socket = self.__create_server()
         self._selectors = selectors.DefaultSelector()
 
-    @report.step('create server socket_connections')
+    @report.utils.step('create server socket_connections')
     def __create_server(self):
         try:
             return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -21,7 +21,7 @@ class MultiServer:
             print(e)
             assert False
 
-    @report.step('accept wrapper')
+    @report.utils.step('accept wrapper')
     def accept_wrapper(self, sock):
         conn, address = sock.accept()  # Should be ready to read
         print('\n\naccepted connection from', address)
@@ -30,7 +30,7 @@ class MultiServer:
         events = selectors.EVENT_READ | selectors.EVENT_WRITE
         self._selectors.register(conn, events, data=data)
 
-    @report.step('service connection')
+    @report.utils.step('service connection')
     def service_connection(self, key, mask):
         sock = key.fileobj
         data = key.data
@@ -48,7 +48,7 @@ class MultiServer:
                 sent = sock.send(data.outb)  # Should be ready to write
                 data.outb = data.outb[sent:]
 
-    @report.step('listen to client')
+    @report.utils.step('listen to client')
     def listen_to_client(self):
         print("Socket Started")
         self._server_socket.bind((self._host, self._port))
@@ -65,7 +65,7 @@ class MultiServer:
                 else:
                     self.service_connection(key, mask)
 
-    @report.step('close server socket_connections')
+    @report.utils.step('close server socket_connections')
     def close_socket(self):
         self._server_socket.close()
         print("server socket_connections closed")

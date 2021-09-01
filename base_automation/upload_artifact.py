@@ -4,7 +4,7 @@ from base_automation import report
 from base_automation.utilities import shared_utilities
 
 
-@report.step('delete dist directory')
+@report.utils.step('delete dist directory')
 def delete_dist_dir(dist_dir):
     if os.path.exists(dist_dir) and os.path.isdir(dist_dir):
         shutil.rmtree(dist_dir)
@@ -12,7 +12,7 @@ def delete_dist_dir(dist_dir):
         print("The dist directory does not exist")
 
 
-@report.step("build")
+@report.utils.step("build")
 def build():
     build_commands = ["python setup.py develop",
                       "python -m pip install --upgrade pip",
@@ -21,7 +21,7 @@ def build():
         shared_utilities.terminal_command(command)
 
 
-@report.step("upload artifact to {azure_feed_name}")
+@report.utils.step("upload artifact to {azure_feed_name}")
 def upload_azure_artifact(azure_feed_name):
     upload_commands = ["python setup.py sdist bdist_wheel", f"twine upload -r {azure_feed_name} dist/*"]
 
@@ -29,19 +29,30 @@ def upload_azure_artifact(azure_feed_name):
         shared_utilities.terminal_command(command)
 
 
-@report.step("upload artifact to {azure_feed_name}")
+@report.utils.step("upload artifact to {azure_feed_name}")
 def upload_azure_artifact(azure_feed_name):
     upload_commands = ["python setup.py sdist bdist_wheel", f"twine upload -r {azure_feed_name} dist/*"]
-
     for command in upload_commands:
         shared_utilities.terminal_command(command)
 
 
-@report.feature('Build & Upload New Artifact To Azure')  # A sub-function function at large
-@report.severity("normal")  # Priority of test cases - 'blocker', 'critical', 'normal', 'minor', 'trivial'
-def run_process(dist_dir, azure_feeds: list):
+@report.utils.step("upload pypi to {repository_url}")
+def upload_pypi_artifact():
+    upload_commands = ["python setup.py sdist bdist_wheel",
+                       f"twine upload --repository-url https://upload.pypi.org/legacy/ dist/*",
+                       f"{shared_utilities.get_environment_variable('pypi-user')}",
+                       f"{shared_utilities.get_environment_variable('pypi-password')}"]
+    for command in upload_commands:
+        shared_utilities.terminal_command(command)
+
+
+@report.utils.feature('Build & Upload New Artifact To Azure')  # A sub-function function at large
+@report.utils.severity("normal")  # Priority of test cases - 'blocker', 'critical', 'normal', 'minor', 'trivial'
+def run_process(dist_dir, azure_feeds: list = None, azure_artifact: bool = False, pypi_artifact: bool = False):
     delete_dist_dir(dist_dir)
     build()
-    # upload artifact to a specific feeds
-    for feed in azure_feeds:
-        upload_azure_artifact(feed)
+    if pypi_artifact:
+        upload_pypi_artifact()
+    if azure_artifact:
+        for feed in azure_feeds:
+            upload_azure_artifact(feed)

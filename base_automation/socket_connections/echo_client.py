@@ -10,7 +10,7 @@ class ClientSocket:
         self._buffer = buffer
         self._client_socket = self.__connect_to_server()
 
-    @report.step('create server socket_connections')
+    @report.utils.step('create server socket_connections')
     def __connect_to_server(self):
         try:
             return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,7 +18,7 @@ class ClientSocket:
             print(e)
             assert False
 
-    @report.step('send message to server')
+    @report.utils.step('send message to server')
     def send_message(self, messages: list):
         self._client_socket.connect((self._host, self._port))
         for x in messages:
@@ -26,7 +26,7 @@ class ClientSocket:
             data = self._client_socket.recv(self._buffer)
             print('Received', repr(data))
 
-    @report.step('close socket_connections')
+    @report.utils.step('close socket_connections')
     def close_socket(self):
         self._client_socket.close()
         print("client socket_connections closed")

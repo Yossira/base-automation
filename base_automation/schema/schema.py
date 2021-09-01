@@ -15,7 +15,7 @@ class JsonSchema:
         self._temp_schema = None
         self._result = None
 
-    @report.step("create schema")
+    @report.utils.step("create schema")
     def initiate_schema(self, file_path=None, json_content_is_exists=None, save_file_name_path=None):
         if file_path is not None:
             with open(file_path, 'r') as file:
@@ -32,7 +32,7 @@ class JsonSchema:
 
         self.__read_schema(file_path=save_file_name_path, schema_content=json_content_is_exists)
 
-    @report.report.step("read schema")
+    @report.utils.step("read schema")
     def __read_schema(self, file_path=None, schema_content=None):
         if file_path is not None:
             with open(file_path, 'r') as file:
@@ -41,7 +41,7 @@ class JsonSchema:
         else:
             self._schema = schema_content
 
-    @report.report.step("validate schema")
+    @report.utils.step("validate schema")
     def validate_schema(self):
         try:
             self._result = validate(instance=self._json_instance, schema=self._schema)

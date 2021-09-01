@@ -4,7 +4,7 @@ from base_automation import report
 
 class MySqlServer:
 
-    @report.step("initiate my sql_capabilities server connection")
+    @report.utils.step("initiate my sql_capabilities server connection")
     def __init__(self, user='root', password='password', host='127.0.0.1', database='sys'):
         self._connection = mysql.connector.connect(user=user, password=password,
                                                    host=host,
@@ -12,7 +12,7 @@ class MySqlServer:
         self._cursor = self._connection.cursor()
         self._data_result = None
 
-    @report.step("get data")
+    @report.utils.step("get data")
     def get_data(self, query, close_connection=True):
         try:
             self._cursor.execute(query)
@@ -25,7 +25,7 @@ class MySqlServer:
             self.close_connection()
             assert False
 
-    @report.step("insert data")
+    @report.utils.step("insert data")
     def insert_data(self, query, data, is_tuple=True, close_connection=True):
         try:
             if is_tuple:
@@ -41,7 +41,7 @@ class MySqlServer:
             self.close_connection()
             assert False
 
-    @report.step("close connection")
+    @report.utils.step("close connection")
     def close_connection(self):
         try:
             self._connection.close()

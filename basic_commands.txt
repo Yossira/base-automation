@@ -16,7 +16,7 @@ Build package:
 
 Upload Package - PyPi:
 1. Run from the terminal - python -m pip install --upgrade twine
-2. Run from the terminal - twine upload --repository-url <https://upload.pypi.org/legacy/> dist/*
+2. Run from the terminal - twine upload --repository-url https://github.com/Yossira/base-automation dist/*
 3. Set user and password
 
 
