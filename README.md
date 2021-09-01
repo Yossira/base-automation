@@ -1,1 +1,1 @@
-# base-automation
+base-automation-package

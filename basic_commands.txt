@@ -1,0 +1,34 @@
+Install new env:
+1. virtualenv <my-package>
+2. source <my-package> /bin/activate
+
+Install new package:
+1. pip install <package name>
+
+Setup package:
+python setup.py install
+
+Build package:
+1.Run from the terminal - python setup.py develop
+2. Run from the terminal - python -m pip install --upgrade pip
+3. Run from the terminal - python -m pip install --upgrade build
+4. Run from the terminal - python -m build
+
+Upload Package - PyPi:
+1. Run from the terminal - python -m pip install --upgrade twine
+2. Run from the terminal - twine upload --repository-url <https://upload.pypi.org/legacy/> dist/*
+3. Set user and password
+
+
+Install Package - Azure:
+index-url=https://pkgs.dev.azure.com/YOSSEFAR0255/qa-automation/_packaging/base-automation/pypi/simple/
+
+Upload Package - Azure:
+// twine upload --repository-url https://pkgs.dev.azure.com/YOSSEFAR0255/qa-automation/_packaging/base-automation/pypi/upload dist/*
+1. twine upload --repository-url https://pkgs.dev.azure.com/<your-organization-name>/<your-project-name>/_packaging/<your-feed-name>/pypi/upload dist/*
+
+Install Package From Azure (More Options):
+1. python -m pip install --upgrade pip
+2. pip install keyring artifacts-keyring
+3. pip install base-automation-package==<0.1.0>
+
