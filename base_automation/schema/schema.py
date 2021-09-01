@@ -16,12 +16,12 @@ class JsonSchema:
         self._result = None
 
     @report.step("create schema")
-    def initiate_schema(self, file_path=None, json_content_is_exsits=None, save_file_name_path=None):
+    def initiate_schema(self, file_path=None, json_content_is_exists=None, save_file_name_path=None):
         if file_path is not None:
             with open(file_path, 'r') as file:
                 self._json_instance = shared_utilities.load_json(file.read())
         else:
-            self._json_instance = json.dumps(json_content_is_exsits)
+            self._json_instance = json.dumps(json_content_is_exists)
 
         if save_file_name_path is not None and not os.path.exists(save_file_name_path):
             with open(save_file_name_path, 'w') as file:
@@ -30,7 +30,7 @@ class JsonSchema:
                 file.write(json.dumps(self._temp_schema))
                 file.close()
 
-        self.__read_schema(file_path=save_file_name_path, schema_content=json_content_is_exsits)
+        self.__read_schema(file_path=save_file_name_path, schema_content=json_content_is_exists)
 
     @report.report.step("read schema")
     def __read_schema(self, file_path=None, schema_content=None):
